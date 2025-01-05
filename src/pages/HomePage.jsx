@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import WeatherCard from "../components/WeatherCard";
 
 function HomePage() {
     return (
@@ -18,6 +19,7 @@ function HomePage() {
                     Search page
                 </Link>
             </nav>
+            <WeatherCard cityName="Minsk" tempC={2} condition="Sunny" />
         </div>
     );
 }
