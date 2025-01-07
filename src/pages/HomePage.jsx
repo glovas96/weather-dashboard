@@ -1,25 +1,18 @@
-import { Link } from "react-router-dom";
 import WeatherCard from "../components/WeatherCard";
 
 function HomePage() {
     return (
         <div className="flex flex-col gap-6 p-6">
             <h1 className="text-2xl font-bold">Home page</h1>
-            <nav className="flex gap-6 text-lg">
-                <Link
-                    to="/city/123"
-                    className="text-blue-600 hover:text-blue-800 underline"
-                >
-                    City page
-                </Link>
-                <Link
-                    to="/search"
-                    className="text-blue-600 hover:text-blue-800 underline"
-                >
-                    Search page
-                </Link>
-            </nav>
-            <WeatherCard cityName="Minsk" tempC={2} condition="Sunny" />
+            <p className="text-gray-700">
+                Welcome! Here you will find quick cards for favorite cities.
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <WeatherCard cityName="Minsk" tempC={-3} condition="Cloudy" />
+                <WeatherCard cityName="Vilnus" tempC={-1} condition="Snow" />
+                <WeatherCard cityName="Berlin" tempC={2} condition="Sunny" />
+            </div>
         </div>
     );
 }
