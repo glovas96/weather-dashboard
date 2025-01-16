@@ -1,4 +1,5 @@
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 function AppLayout({ children }) {
     return (
@@ -7,6 +8,7 @@ function AppLayout({ children }) {
             <main>
                 {children}
             </main>
+            <Footer />
         </div>
     );
 }
