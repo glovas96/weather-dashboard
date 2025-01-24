@@ -22,14 +22,6 @@ function Navbar() {
                     >
                         Search
                     </NavLink>
-                    <NavLink
-                        to="/city/123"
-                        className={({ isActive }) =>
-                            `hover:underline ${isActive ? "text-blue-700 font-semibold" : "text-blue-600"}`
-                        }
-                    >
-                        City
-                    </NavLink>
                 </nav>
             </div>
         </header>
