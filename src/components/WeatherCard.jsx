@@ -1,6 +1,8 @@
-// WeatherCard: reusable card showing city name, temp, and condition
+import { useNavigate } from "react-router-dom";
 
 function WeatherCard({ cityName, tempC, condition }) {
+    const navigate = useNavigate();
+
     return (
         <div className="bg-white border rounded p-4">
             <div className="flex items-center justify-between">
@@ -12,8 +14,8 @@ function WeatherCard({ cityName, tempC, condition }) {
             </div>
             <button
                 className="mt-4 text-blue-600 hover:text-blue-800 underline"
-                // Later: navigate to city page with real id
-                onClick={() => alert("Navigate to city details (to be implemented)")}
+                // navigate to city page with real id
+                onClick={() => navigate(`/city/${cityName}`)}
             >
                 View details
             </button>
