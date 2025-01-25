@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 // function to get coordinates by city name
 const fetchCoords = async (city) => {
     const res = await fetch(
-        `https://geocoding-api.open-meteo.com/v1/search?name=${city}&count=1`
+        `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(city)}&count=1`
     );
     const data = await res.json();
     if (!data.results || data.results.length === 0) {
@@ -36,7 +36,12 @@ function CityPage() {
     });
 
     if (isLoading) return <p>Loading weather...</p>;
-    if (error) return <p>Error loading weather</p>;
+    if (error) {
+        if (error.message === "City not found") {
+            return <p>City "{id}" not found</p>;
+        }
+        return <p>Error loading weather</p>;
+    }
 
     return (
         <div className="flex flex-col gap-6 p-6">
