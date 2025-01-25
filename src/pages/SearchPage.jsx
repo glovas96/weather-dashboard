@@ -1,18 +1,37 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-/**
- * SearchPage: minimal search that navigates to city route by name
- * Later: real geocoding + suggestions
- */
+async function verifyCity(name) {
+    const res = await fetch(
+        `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(name)}&count=1`
+    );
+    const data = await res.json();
+    if (!data.results?.length) {
+        throw new Error("City not found");
+    }
+}
+
 function SearchPage() {
     const [query, setQuery] = useState("");
+    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    const onSubmit = (e) => {
+    const onSubmit = async (e) => {
         e.preventDefault();
-        if (!query.trim()) return;
-        navigate(`/city/${query.trim()}`);
+        const trimmed = query.trim();
+        if (!trimmed) return;
+
+        try {
+            setError(null);
+            await verifyCity(trimmed);
+            navigate(`/city/${trimmed}`);
+        } catch (err) {
+            if (err.message === "City not found") {
+                setError(`City "${trimmed}" not found`);
+            } else {
+                setError("Error loading weather");
+            }
+        }
     };
 
     return (
@@ -33,11 +52,10 @@ function SearchPage() {
                     Search
                 </button>
             </form>
-            <p className="text-sm text-gray-600">
-                Later: real geocoding + suggestions
-            </p>
+            {error && <p>{error}</p>}
         </div>
     );
 }
 
 export default SearchPage;
+
