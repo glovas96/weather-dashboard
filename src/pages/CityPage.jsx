@@ -1,5 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import { useState, useEffect } from "react";
+import { addFavorite, removeFavorite, isFavorite } from "../utils/favorites";
+
 
 // function to get coordinates by city name
 const fetchCoords = async (city) => {
@@ -35,6 +38,22 @@ function CityPage() {
         queryFn: fetchWeather,
     });
 
+    const [favorite, setFavorite] = useState(false);
+
+    useEffect(() => {
+        setFavorite(isFavorite(id));
+    }, [id]);
+
+    const toggleFavorite = () => {
+        if (favorite) {
+            removeFavorite(id);
+            setFavorite(false);
+        } else {
+            addFavorite(id);
+            setFavorite(true);
+        }
+    };
+
     if (isLoading) return <p>Loading weather...</p>;
 
     if (error) {
@@ -49,7 +68,12 @@ function CityPage() {
 
     return (
         <div className="flex flex-col gap-6 p-6">
-            <h1 className="text-2xl font-bold">{id}</h1>
+            <div className="flex items-center justify-between">
+                <h1 className="text-2xl font-bold">{id}</h1>
+                <button onClick={toggleFavorite} className="text-2xl">
+                    {favorite ? "⭐" : "☆"}
+                </button>
+            </div>
 
             {/* Current weather */}
             <h2 className="text-xl font-bold">Current Weather</h2>
@@ -97,4 +121,3 @@ function CityPage() {
 }
 
 export default CityPage;
-
