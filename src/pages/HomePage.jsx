@@ -1,13 +1,18 @@
-import WeatherCard from "../components/WeatherCard";
+import { useQueries } from "@tanstack/react-query";
 import { getFavorites } from "../utils/favorites";
-import { useState, useEffect } from "react";
+import { fetchWeatherSummary } from "../utils/weather";
+import { weatherCodeMap } from "../utils/weatherCodeMap";
+import WeatherCard from "../components/WeatherCard";
 
 function HomePage() {
-  const [favorites, setFavorites] = useState([]);
+  const favorites = getFavorites();
 
-  useEffect(() => {
-    setFavorites(getFavorites());
-  }, []);
+  const weatherQueries = useQueries({
+    queries: favorites.map((city) => ({
+      queryKey: ["weatherSummary", city],
+      queryFn: () => fetchWeatherSummary(city),
+    })),
+  });
 
   return (
     <div className="flex flex-col gap-6 p-6">
@@ -17,18 +22,42 @@ function HomePage() {
       </p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {favorites.map((city) => (
-          <WeatherCard
-            key={city}
-            cityName={city}
-            tempC={"--"}
-            condition={"--"}
-          />
-        ))}
+        {weatherQueries.map((q, i) => {
+          const city = favorites[i];
+          if (q.isLoading) {
+            return (
+              <WeatherCard
+                key={city}
+                cityName={city}
+                tempC={null}
+                condition={"Loading..."}
+              />
+            );
+          }
+          if (q.error) {
+            return (
+              <WeatherCard
+                key={city}
+                cityName={city}
+                tempC={null}
+                condition={"Error"}
+              />
+            );
+          }
+
+          const current = q.data.current;
+          return (
+            <WeatherCard
+              key={city}
+              cityName={city}
+              tempC={current.temperature_2m}
+              condition={weatherCodeMap[current.weathercode] || "Unknown"}
+            />
+          );
+        })}
       </div>
     </div>
   );
 }
 
 export default HomePage;
-
