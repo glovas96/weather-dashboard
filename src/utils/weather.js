@@ -30,3 +30,24 @@ export const fetchWeatherSummary = async (city) => {
     );
     return res.json();
 };
+
+// get city suggestions
+export const fetchCitySuggestions = async (name) => {
+    const res = await fetch(
+        `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(name)}&count=5`
+    );
+    const data = await res.json();
+    return data.results || [];
+};
+
+// verify if a city exists
+export const verifyCity = async (name) => {
+    const res = await fetch(
+        `https://geocoding-api.open-meteo.com/v1/search?name=${encodeURIComponent(name)}&count=1`
+    );
+    const data = await res.json();
+    if (!data.results || data.results.length === 0) {
+        throw new Error("City not found");
+    }
+};
+

@@ -28,13 +28,27 @@ function CityPage() {
         }
     };
 
-    if (isLoading) return <p>Loading weather...</p>;
+    if (isLoading) {
+        return (
+            <div className="flex justify-center items-center h-64">
+                <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin"></div>
+            </div>
+        );
+    }
 
     if (error) {
         if (error.message === "City not found") {
-            return <p>City "{id}" not found</p>;
+            return (
+                <p className="text-red-600 bg-red-50 border border-red-200 rounded px-3 py-2 w-full md:w-96">
+                    City "{id}" not found
+                </p>
+            );
         }
-        return <p>Error loading weather</p>;
+        return (
+            <p className="text-red-600 bg-red-50 border border-red-200 rounded px-3 py-2 w-full md:w-96">
+                Error loading weather
+            </p>
+        );
     }
 
     const current = data.current;
