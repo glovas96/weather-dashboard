@@ -1,16 +1,30 @@
-# React + Vite
+## Weather Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Lightweight weather dashboard built with React + Vite and deployed via GitHub Pages.
 
-Currently, two official plugins are available:
+## Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- React 19 + Vite 7
+- React Query for caching server data
+- React Router v7
+- Tailwind CSS 4
 
-## React Compiler
+## Structure
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- `src/main.jsx` → `App.jsx` wrapped by `QueryClientProvider`, `FavoritesProvider`, and `BrowserRouter`.
+- `src/layouts/AppLayout.jsx` provides the `Navbar`, `Footer`, and Tailwind container as the UI shell.
+- `src/pages/HomePage`, `CityPage`, and `SearchPage` handle routes and delegate rendering to `src/components/*`.
+- `src/components/` hosts reusable UI blocks (weather card, navigation, footer).
+- `src/hooks/` encapsulates React Query logic (`useWeatherSummaries`, `useWeatherDetails`, `useCitySuggestions`, `useFavorites`).
+- `src/services/weatherService.js` centralizes Open-Meteo calls with a shared `safeFetch`.
+- `src/contexts/` and `src/utils/` manage `localStorage` favorites and the weather code map that backs `FavoritesProvider`.
 
-## Expanding the ESLint configuration
+## Scripts
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- npm run dev      - start Vite dev server
+- npm run lint     - run ESLint against src
+- npm run format   - run Prettier on src
+- npm run build    - build to dist/ with base /weather-dashboard/
+- npm run deploy   - push built dist/ to gh-pages branch
+
+

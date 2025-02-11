@@ -11,7 +11,7 @@ export default defineConfig({
   base: '/weather-dashboard/',
   plugins: [react(), tailwindcss()],
   build: {
-    outDir: 'docs',
+    outDir: 'dist',
     emptyOutDir: true,
   },
   resolve: {
